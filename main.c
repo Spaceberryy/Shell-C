@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 void read_input(char *input, size_t size) {
     fgets(input, size, stdin);   
@@ -29,20 +30,25 @@ void handle_type(char *input) {
     }
 }
 
+void print_path(char *input) {
+    char *path = getenv("PATH");
+    printf("%s\n", path);
+}
 
 void handle_input(char *input) {
-    if (!strcmp(input, "exit 0"))
+    if (!strcmp(input, "exit 0")){
         exit(0);
-        
-    if (strncmp(input, "echo", strlen("echo")) == 0) {
+    } else if (strncmp(input, "echo", strlen("echo")) == 0) {
         handle_echo(input);
-    }
-    if (strncmp(input, "type", strlen("type")) == 0) {
+	print_path(input + 5);
+    } else if (strncmp(input, "type", strlen("type")) == 0) {
         handle_type(input);
+    } else {
+	printf("%s: command not found\n", input);
     }
-    printf("%s: command not found\n", input);
-
 }
+
+
 
 int main() {
     char input[100];
